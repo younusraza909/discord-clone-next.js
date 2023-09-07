@@ -1,5 +1,5 @@
 import Image from "next/image";
 
 export default function Home() {
-  return <p>Hello Discord Clone</p>;
+  return <p>This is the protected route</p>;
 }
