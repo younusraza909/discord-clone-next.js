@@ -11,9 +11,30 @@ import { useModal } from '@/hooks/use-modal-store';
 import { ServerWithMemebersWithProfile } from '@/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { UserAvatar } from '@/components/user-avatar';
-import { ShieldAlert, ShieldCheck } from 'lucide-react';
+import {
+  Check,
+  Gavel,
+  MoreVertical,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  ShieldQuestion,
+} from 'lucide-react';
+import { useState } from 'react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 function MembersModal() {
+  const [loadingId, setLoadingId] = useState('');
   const { isOpen, type, onClose, data, onOpen } = useModal();
 
   const roleIconMap = {
@@ -48,6 +69,47 @@ function MembersModal() {
                 </div>
                 <p className='text-xs text-zinc-500'>{member.profile.email}</p>
               </div>
+              {server?.profileId !== member.profileId &&
+                loadingId !== member.id && (
+                  <div className='ml-auto'>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <MoreVertical className='h-4 w-4 text-zinc-500' />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side='left'>
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger className='flex items-center'>
+                            <ShieldQuestion className='w-4 h-4 mr-2' />
+                            <span>Role</span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              <DropdownMenuItem onClick={() => {}}>
+                                <Shield className='h-4 w-4 mr-2' />
+                                Guest
+                                {member.role === 'GUEST' && (
+                                  <Check className='h-4 w-4 ml-auto' />
+                                )}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => {}}>
+                                <ShieldCheck className='h-4 w-4 mr-2' />
+                                Moderator
+                                {member.role === 'MODERATOR' && (
+                                  <Check className='h-4 w-4 ml-auto' />
+                                )}
+                              </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => {}}>
+                          <Gavel className='h-4 w-4 mr-2' />
+                          Kick
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                )}
             </div>
           ))}
         </ScrollArea>
