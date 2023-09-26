@@ -84,7 +84,7 @@ function EditChannelModal() {
       let url = qs.stringifyUrl({
         url: `/api/channels/${channel?.id}`,
         query: {
-          serverId: params.serverId,
+          serverId: params?.serverId,
         },
       });
 
